@@ -55,6 +55,7 @@ int main(int argc, char** argv) {
 		boost::replace_all(file_path, " ", "");
 		boost::replace_all(file_path, "\n", "");
 		boost::replace_all(file_path, "\r", "");
+		boost::replace_all(file_path, "$", "");
 		std::transform(file_path.begin(), file_path.end(), file_path.begin(), ::tolower);
 		std::string response = "Domain or IP not found in Whois Database";
 		f.open(file_path.c_str(), std::fstream::in);
