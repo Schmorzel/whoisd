@@ -4,7 +4,7 @@ Copyright (c) Tim Zimmermann <tizimmermann01@gmail.com>
 Description:   
 whoisd is a server software compatible with the whois(1) command  
 on most linux and unix systems.  It can serve domain name, IPv4    
-and IPv6  whois records when queried and uses a linux / unix   
+and IPv6 whois records when queried and uses a linux / unix   
 filesystem structure for storing all the records.   
   
 Requirements:    
@@ -15,7 +15,7 @@ Requirements:
 Usage:  
 In order to use the server, simply run the whois(1) command  in  
 any operating system with the -h flag followed by your server's  
-IP Address and then the  query.  An  example  asking  localhost  
+IP Address and then the query. An example asking localhost  
 about 192.168.178.2 is: whois -h localhost 192.168.178.2.  
   
 Storage Structure:  
