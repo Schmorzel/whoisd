@@ -56,10 +56,10 @@ int main(int argc, char** argv) {
 		boost::replace_all(file_path, " ", "");
 		boost::replace_all(file_path, "\n", "");
 		boost::replace_all(file_path, "\r", "");
-		boost::replace_all(file_path, "$", "");
-		std::string response = "Domain or IP not found in Whois Database";
+		std::string response = "Domain or IP not found in Whois Database\n";
 		f.open(file_path.c_str(), std::fstream::in);
 		getline(f, response, '\0');
+		f.close();
 		int response_length = response.length();
 		char response_char[response_length];
 		strncpy(response_char, response.c_str(), response_length);
