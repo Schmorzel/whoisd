@@ -11,7 +11,6 @@ Requirements:
 - Linux / Unix based operating system  
 - g++  
 - make  
-- libboost-dev  
   
 Usage:  
 In order to use the server, simply run the whois(1) command  in  
