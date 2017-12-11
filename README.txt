@@ -11,6 +11,13 @@ Requirements:
 - Linux / Unix based operating system  
 - g++  
 - make  
+
+Installation:  
+- make  
+- make install    
+  
+Uninstall:  
+- make uninstall  
   
 Usage:  
 In order to use the server, simply run the whois(1) command  in  
