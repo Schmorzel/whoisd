@@ -1,4 +1,4 @@
-whoisd  
+#whoisd  
 Copyright (c) Tim Zimmermann <tizimmermann01@gmail.com>  
   
 Description:   
