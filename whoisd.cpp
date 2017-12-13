@@ -16,6 +16,12 @@ void error(const char *msg) {
 }
 
 int main(int argc, char** argv) {
+	if (argc > 1) {
+		if (std::string(argv[1]) == "-version" || std::string(argv[1]) == "--version") {
+			std::cout << "Whoisd v1.2.2 (13.12.2017)" << std::endl;
+			exit(0);
+		}
+	}
 	std::fstream f;
 	f.open("/run/whoisd.pid", std::ios::out);
 	f << getpid();
