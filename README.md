@@ -16,6 +16,10 @@ filesystem structure for storing all the records.
 - make  
 - make install    
   
+## Update:
+- make  
+- make update    
+    
 ## Uninstall:  
 - make uninstall  
   
