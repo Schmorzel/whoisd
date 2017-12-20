@@ -56,9 +56,9 @@ int main(int argc, char** argv) {
 			error("ERROR reading from socket");
 		}
 		std::string buffer_str = std::string(buffer);
+		boost::replace_all(buffer_str, "/", "");
 		std::string file_path = "/etc/whois/db/" + buffer_str;
 		std::transform(file_path.begin(), file_path.end(), file_path.begin(), ::tolower);
-		boost::replace_all(file_path, "/", "");
 		boost::replace_all(file_path, " ", "");
 		boost::replace_all(file_path, "\n", "");
 		boost::replace_all(file_path, "\r", "");
