@@ -9,13 +9,42 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <fstream>
 #include <algorithm>
+#include <sys/stat.h>
+#include <array>
+#include <cstdio>
+#include <memory>
+#include <stdexcept>
 
 void error(const char *msg) {
     std::cerr << msg << std::endl;
     exit(1);
 }
 
+std::string shell_exec(std::string cmd) {
+        std::array<char, 1024> buffer;
+        std::string result;
+        std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
+        if (!pipe) {
+                std::cerr << "ERROR executing " << cmd << std::endl;
+                exit(1);
+        }
+        while (!feof(pipe.get())) {
+                if (fgets(buffer.data(), 1024, pipe.get()) != nullptr) {
+                        result += buffer.data();
+                }
+        }
+        return result;
+}
+
 int main(int argc, char** argv) {
+	std::string version = "1.2.2";
+	std::string remote_version = shell_exec("curl --silent https://raw.githubusercontent.com/Schmorzel/whoisd/master/.version");
+	boost::replace_all(remote_version, "\n", "");
+	boost::replace_all(remote_version, "\r", "");
+	if (remote_version != version) {
+		std::cout << "Update to version " << remote_version << " available!" << std::endl;
+		std::cout << "To update clone the following Git Repository: https://github.com/Schmorzel/whoisd" << std::endl;
+	}
 	if (argc > 1) {
 		if (std::string(argv[1]) == "-version" || std::string(argv[1]) == "--version") {
 			std::cout << "Whoisd v1.2.2 (13.12.2017)" << std::endl;
