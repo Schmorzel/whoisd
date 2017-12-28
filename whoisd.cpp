@@ -42,8 +42,13 @@ int main(int argc, char** argv) {
 	boost::replace_all(remote_version, "\n", "");
 	boost::replace_all(remote_version, "\r", "");
 	if (remote_version != version) {
-		std::cout << "Update to version " << remote_version << " available!" << std::endl;
-		std::cout << "To update clone the following Git Repository: https://github.com/Schmorzel/whoisd" << std::endl;
+                if (remote_version.length() == 0) {
+                        std::cout << "Could not check for updates!" << std::endl;
+                }
+                else {
+                        std::cout << "Update to version " << remote_version << " available!" << std::endl;
+                        std::cout << "To update clone the following Git Repository: https://github.com/Schmorzel/ddnsd" << std::endl;
+                }
 	}
 	if (argc > 1) {
 		if (std::string(argv[1]) == "-version" || std::string(argv[1]) == "--version") {
