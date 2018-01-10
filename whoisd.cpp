@@ -38,7 +38,7 @@ std::string shell_exec(std::string cmd) {
 
 int main(int argc, char** argv) {
 	std::string version = "v1.2.3";
-	std::string release_date = "10.1.2018"
+	std::string release_date = "10.1.2018";
 	std::string remote_version = shell_exec("curl --silent https://raw.githubusercontent.com/Schmorzel/whoisd/master/.version");
 	boost::replace_all(remote_version, "\n", "");
 	boost::replace_all(remote_version, "\r", "");
