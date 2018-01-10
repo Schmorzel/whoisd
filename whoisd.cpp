@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
                 }
                 else {
                         std::cout << "Update to version " << remote_version << " available!" << std::endl;
-                        std::cout << "To update clone the following Git Repository: https://github.com/Schmorzel/ddnsd" << std::endl;
+                        std::cout << "To update clone the following Git Repository: https://github.com/Schmorzel/whoisd" << std::endl;
                 }
 	}
 	if (argc > 1) {
