@@ -37,7 +37,8 @@ std::string shell_exec(std::string cmd) {
 }
 
 int main(int argc, char** argv) {
-	std::string version = "1.2.2";
+	std::string version = "v1.2.3";
+	std::string release_date = "10.1.2018"
 	std::string remote_version = shell_exec("curl --silent https://raw.githubusercontent.com/Schmorzel/whoisd/master/.version");
 	boost::replace_all(remote_version, "\n", "");
 	boost::replace_all(remote_version, "\r", "");
@@ -52,7 +53,7 @@ int main(int argc, char** argv) {
 	}
 	if (argc > 1) {
 		if (std::string(argv[1]) == "-version" || std::string(argv[1]) == "--version") {
-			std::cout << "Whoisd v1.2.2 (13.12.2017)" << std::endl;
+			std::cout << "Whoisd " << version << " " << releae_date << std::endl;
 			exit(0);
 		}
 	}
