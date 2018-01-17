@@ -36,26 +36,51 @@ std::string shell_exec(std::string cmd) {
         return result;
 }
 
+std::string read_config(std::string file_path, std::string config_key) {
+        std::fstream f;
+        std::string result;
+        std::string config_value;
+        f.open(file_path, std::fstream::in);
+        int length = config_key.length();
+        while(getline(f, config_value)) {
+                if(config_value.substr(0, length) == config_key) {
+                        boost::replace_all(config_value, config_key, "");
+                        result = config_value;
+                        break;
+                }
+        }
+        f.close();
+        return result;
+}
+
 int main(int argc, char** argv) {
-	std::string version = "v1.2.3";
-	std::string release_date = "10.1.2018";
-	std::string remote_version = shell_exec("curl --silent https://raw.githubusercontent.com/Schmorzel/whoisd/master/.version");
-	boost::replace_all(remote_version, "\n", "");
-	boost::replace_all(remote_version, "\r", "");
-	if (remote_version != version) {
-                if (remote_version.length() == 0) {
-                        std::cout << "Could not check for updates!" << std::endl;
-                }
-                else {
-                        std::cout << "Update to version " << remote_version << " available!" << std::endl;
-                        std::cout << "To update clone the following Git Repository: https://github.com/Schmorzel/whoisd" << std::endl;
-                }
+	std::string version = "v1.2.4";
+	std::string release_date = "17.1.2018";
+	std::string config = "/etc/whois/whoisd.conf";
+	std::string update_checker = read_config(config, "update_checker = ");
+	if (update_checker == "true") {
+		std::string remote_version = shell_exec("curl --silent https://raw.githubusercontent.com/Schmorzel/whoisd/master/.version");
+		boost::replace_all(remote_version, "\n", "");
+		boost::replace_all(remote_version, "\r", "");
+		if (remote_version != version) {
+    	            if (remote_version.length() == 0) {
+        	                std::cout << "Could not check for updates!" << std::endl;
+                	}
+                	else {
+                        	std::cout << "Update to version " << remote_version << " available!" << std::endl;
+                        	std::cout << "To update clone the following Git Repository: https://github.com/Schmorzel/whoisd" << std::endl;
+                	}
+		}
 	}
 	if (argc > 1) {
 		if (std::string(argv[1]) == "-version" || std::string(argv[1]) == "--version") {
 			std::cout << "Whoisd " << version << " " << release_date << std::endl;
 			exit(0);
 		}
+	}
+	std::string config_version = read_config(config, "config_version = ");
+	if (config_version != "1") {
+		shell_exec("echo \"#Whoisd Configuration\n\n#Enable (true)/Disable (false) the Update Checker:\nupdate_checker = true\n\n#Do not touch:\nconfig_version = 1\n\" >/etc/whois/whoisd.conf");
 	}
 	std::fstream f;
 	f.open("/run/whoisd.pid", std::ios::out);
