@@ -86,7 +86,7 @@ std::string read_config(std::string file_path, std::string config_key) {
 
 int main(int argc, char** argv) {
 	std::string version = "v1.2.5";
-	std::string release_date = "17.1.2018";
+	std::string release_date = "19.1.2018";
 	std::string config = "/etc/whois/whoisd.conf";
 	std::string update_checker = read_config(config, "update_checker = ");
 	if (update_checker == "true") {
