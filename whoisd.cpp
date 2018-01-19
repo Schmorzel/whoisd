@@ -14,10 +14,41 @@
 #include <cstdio>
 #include <memory>
 #include <stdexcept>
+#include <thread>
 
 void error(const char *msg) {
     std::cerr << msg << std::endl;
     exit(1);
+}
+
+void thread_task(int newsockfd) {
+		int n;
+		std::fstream f;
+		char buffer[255];
+		bzero(buffer,256);
+		n = read(newsockfd,buffer,255);
+		if (n < 0) {
+			error("ERROR reading from socket");
+		}
+		std::string buffer_str = std::string(buffer);
+		boost::replace_all(buffer_str, "/", "");
+		std::string file_path = "/etc/whois/db/" + buffer_str;
+		std::transform(file_path.begin(), file_path.end(), file_path.begin(), ::tolower);
+		boost::replace_all(file_path, " ", "");
+		boost::replace_all(file_path, "\n", "");
+		boost::replace_all(file_path, "\r", "");
+		std::string response = "Domain or IP not found in Whois Database\n";
+		f.open(file_path.c_str(), std::fstream::in);
+		getline(f, response, '\0');
+		f.close();
+		int response_length = response.length();
+		char response_char[response_length];
+		strncpy(response_char, response.c_str(), response_length);
+		n = write(newsockfd, response_char, response_length);
+		if (n < 0) {
+			error("ERROR writing to socket");
+		}
+		close(newsockfd);
 }
 
 std::string shell_exec(std::string cmd) {
@@ -54,7 +85,7 @@ std::string read_config(std::string file_path, std::string config_key) {
 }
 
 int main(int argc, char** argv) {
-	std::string version = "v1.2.4";
+	std::string version = "v1.2.5";
 	std::string release_date = "17.1.2018";
 	std::string config = "/etc/whois/whoisd.conf";
 	std::string update_checker = read_config(config, "update_checker = ");
@@ -110,30 +141,8 @@ int main(int argc, char** argv) {
 		if (newsockfd < 0) {
 			error("ERROR on accept");
 		}
-		bzero(buffer,256);
-		n = read(newsockfd,buffer,255);
-		if (n < 0) {
-			error("ERROR reading from socket");
-		}
-		std::string buffer_str = std::string(buffer);
-		boost::replace_all(buffer_str, "/", "");
-		std::string file_path = "/etc/whois/db/" + buffer_str;
-		std::transform(file_path.begin(), file_path.end(), file_path.begin(), ::tolower);
-		boost::replace_all(file_path, " ", "");
-		boost::replace_all(file_path, "\n", "");
-		boost::replace_all(file_path, "\r", "");
-		std::string response = "Domain or IP not found in Whois Database\n";
-		f.open(file_path.c_str(), std::fstream::in);
-		getline(f, response, '\0');
-		f.close();
-		int response_length = response.length();
-		char response_char[response_length];
-		strncpy(response_char, response.c_str(), response_length);
-		n = write(newsockfd, response_char, response_length);
-		if (n < 0) {
-			error("ERROR writing to socket");
-		}
-		close(newsockfd);
+		std::thread t(thread_task, newsockfd);
+		t.detach();
 	}
 	close(sockfd);
 	return 0;

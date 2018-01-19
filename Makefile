@@ -1,5 +1,5 @@
 default:
-	g++ whoisd.cpp -I./ -o whoisd
+	g++ whoisd.cpp -pthread -I./ -o whoisd
 
 install:
 	@mkdir -p /etc/whois/
