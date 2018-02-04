@@ -5,7 +5,7 @@ install:
 	@mkdir -p /etc/whois/
 	@mkdir -p /etc/whois/db/
 	@cp ./whoisd /usr/bin/
-	@echo "[Unit]\nDescription=Whois Server\n\n[Service]\nExecStart=/usr/bin/whoisd\nPIDFile=/run/whoisd.pid\n\n[Install]\nWantedBy=multi-user.target\n" > /lib/systemd/system/whoisd.service
+	@echo "[Unit]\nDescription=Whois Server\nAfter=network.target\n\n[Service]\nExecStart=/usr/bin/whoisd\nPIDFile=/run/whoisd.pid\n\n[Install]\nWantedBy=multi-user.target\n" > /lib/systemd/system/whoisd.service
 	systemctl enable whoisd.service
 	@echo "Installation successfully completed!"
 
